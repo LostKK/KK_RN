@@ -21,11 +21,14 @@ const MainNavigator = createStackNavigator({
   },
 });
 
-export default createAppContainer(createSwitchNavigator({
-  Init: InitNavigator,
-  Main: MainNavigator
-},{
-  navigationOptions: {
+export default createAppContainer(
+  createSwitchNavigator(
+    {
+      Init: InitNavigator,
+      Main: MainNavigator,
+    },
+    {
+      navigationOptions: {
         header: null,
       },
     },

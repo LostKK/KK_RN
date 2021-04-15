@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-export default class PopularPage extends Component {
+export default class MyPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>PopularPage</Text>
+        <Text style={styles.welcome}>MyPage</Text>
       </View>
     );
   }

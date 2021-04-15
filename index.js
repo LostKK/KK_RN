@@ -9,4 +9,4 @@ import {name as appName} from './app.json';
 import AppNavigators from './js/navigator/AppNavigators'
 import 'react-native-gesture-handler';
 
-AppRegistry.registerComponent(appName, () => WelcomePage);
+AppRegistry.registerComponent(appName, () => AppNavigators);
