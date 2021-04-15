@@ -7,7 +7,7 @@ export default class TrendingPage extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>FavoritePage</Text>
+        <Text style={styles.welcome}>TrendingPage</Text>
         <Button
           title={'修改主题'}
           onPress={() =>
