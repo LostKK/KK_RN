@@ -80,6 +80,18 @@ class PopularTab extends Component {
             );
           }}
         />
+        <Button
+          title={'离线缓存框架'}
+          style={styles.btnStyle}
+          onPress={() => {
+            NavigationUtil.goPage(
+              {
+                navigation: this.props.navigation,
+              },
+              'DataStoreDemoPage',
+            );
+          }}
+        />
       </View>
     );
   }
