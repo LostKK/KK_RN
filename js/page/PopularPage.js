@@ -58,12 +58,25 @@ class PopularTab extends Component {
         </Text>
         <Button
           title={'Fetch 使用'}
+          style={styles.btnStyle}
           onPress={() => {
             NavigationUtil.goPage(
               {
                 navigation: this.props.navigation,
               },
               'FetchDemoPage',
+            );
+          }}
+        />
+        <Button
+          title={'AsyncStorage 使用!'}
+          style={styles.btnStyle}
+          onPress={() => {
+            NavigationUtil.goPage(
+              {
+                navigation: this.props.navigation,
+              },
+              'AsyncStorageDemoPage',
             );
           }}
         />
@@ -93,5 +106,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 6,
     marginBottom: 6,
+  },
+  btnStyle: {
+    marginBottom: 50,
   },
 });
