@@ -16,6 +16,14 @@ export function onLoadPopularData(storeName, url) {
       .fetchData(url) //异步action与数据流
       .then(data => {
         handleData(dispatch, storeName, data);
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch({
+          type: Types.LOAD_POPULAR_FAIL,
+          storeName,
+          error,
+        });
       });
   };
 }

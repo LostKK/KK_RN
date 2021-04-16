@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import theme from './theme';
+import popular from './popular';
 
 /**
  * 1.合并reducer
@@ -8,6 +9,7 @@ import theme from './theme';
 
 const index = combineReducers({
   theme: theme,
+  popular: popular,
 });
 
 export default index;
