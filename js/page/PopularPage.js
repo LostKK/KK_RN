@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Butto,
+  ActivityIndicator,
   FlatList,
   RefreshControl,
 } from 'react-native';
@@ -11,6 +11,7 @@ import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createAppContainer} from 'react-navigation';
 import NavigationUtil from '../navigator/NavigationUtil';
 import PopularItem from '../common/PopularItem';
+import Toast from 'react-native-easy-toast';
 import {connect} from 'react-redux';
 import actions from '../action/index';
 
@@ -59,6 +60,7 @@ export default class PopularPage extends Component {
   }
 }
 
+const pageSize = 10; // 设为常量,防止修改
 class PopularTab extends Component {
   constructor(props) {
     super(props);
@@ -70,10 +72,43 @@ class PopularTab extends Component {
     this.loadData();
   }
 
-  loadData() {
-    const {onLoadPopularData} = this.props;
+  loadData(loadData) {
+    const {onRefreshPopular, onLoadMorePopular} = this.props;
+    const store = this._store();
     const url = this.genFetchUrl(this.storeName);
-    onLoadPopularData(this.storeName, url);
+    if (loadData) {
+      onLoadMorePopular(
+        this.storeName,
+        ++store.pageIndex,
+        pageSize,
+        store.items,
+        callback => {
+          this.toast.show('没有更多了');
+        },
+      );
+    } else {
+      onRefreshPopular(this.storeName, url, pageSize);
+    }
+  }
+
+  /**
+   *
+   * @param 获取与当前页面有关的数据
+   * @returns {*}
+   * @private
+   */
+  _store() {
+    const {popular} = this.props;
+    let store = popular[this.storeName];
+    if (!store) {
+      store = {
+        items: [],
+        isLoading: false,
+        projectModels: [], // 要显示的数据
+        hideLoadingMore: true, //默认隐藏加载更多
+      };
+    }
+    return store;
   }
 
   genFetchUrl(key) {
@@ -85,19 +120,22 @@ class PopularTab extends Component {
     return <PopularItem item={item} onSelect={() => {}} />;
   }
 
+  genIndicator() {
+    return this._store().hideLoadingMore ? null : (
+      <View style={styles.indicatorContainer}>
+        <ActivityIndicator style={styles.indicator} />
+        <Text>正在加载更多</Text>
+      </View>
+    );
+  }
+
   render() {
     const {popular} = this.props;
-    let store = popular[this.storeName]; //动态获取state
-    if (!store) {
-      store = {
-        items: [],
-        isLoading: false,
-      };
-    }
+    let store = this._store();
     return (
       <View style={styles.container}>
         <FlatList
-          data={store.items}
+          data={store.projectModels}
           renderItem={data => this.renderItem(data)}
           keyExtractor={item => '' + item.id}
           refreshControl={
@@ -110,7 +148,13 @@ class PopularTab extends Component {
               tintColor={THEME_COLOR}
             />
           }
+          ListFooterComponent={() => this.genIndicator()}
+          onEndReached={() => {
+            this.loadData(true);
+          }}
+          onEndReachedThreshold={0.5}
         />
+        <Toast ref={toast => (this.toast = toast)} position={'center'} />
       </View>
     );
   }
@@ -121,8 +165,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onLoadPopularData: (storeName, url) =>
-    dispatch(actions.onLoadPopularData(storeName, url)),
+  onRefreshPopular: (storeName, url) =>
+    dispatch(actions.onRefreshPopular(storeName, url)),
+  onLoadMorePopular: (storeName, url) =>
+    dispatch(actions.onLoadMorePopular(storeName, url)),
 });
 
 const PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab);
@@ -148,7 +194,11 @@ const styles = StyleSheet.create({
     marginTop: 6,
     marginBottom: 6,
   },
-  btnStyle: {
-    marginBottom: 50,
+  indicatorContainer: {
+    alignItems: 'center',
+  },
+  indicator: {
+    color: 'red',
+    margin: 10,
   },
 });
