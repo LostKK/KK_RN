@@ -12,6 +12,7 @@ import {createAppContainer} from 'react-navigation';
 import NavigationUtil from '../navigator/NavigationUtil';
 import PopularItem from '../common/PopularItem';
 import Toast from 'react-native-easy-toast';
+import NavigationBar from '../common/NavigationBar';
 import {connect} from 'react-redux';
 import actions from '../action/index';
 
@@ -38,6 +39,18 @@ export default class PopularPage extends Component {
   }
 
   render() {
+    let statusBar = {
+      backgroundColor: THEME_COLOR,
+      barStyle: 'light-content',
+    };
+    let navigationBar = (
+      <NavigationBar
+        title={'最热'}
+        statusBar={statusBar}
+        style={{backgroundColor: THEME_COLOR}}
+      />
+    );
+
     const TabNavigator = createAppContainer(
       createMaterialTopTabNavigator(this._genTabs(), {
         tabBarOptions: {
@@ -45,7 +58,7 @@ export default class PopularPage extends Component {
           upperCaseLabel: false,
           scrollEnabled: true,
           style: {
-            backgroundColor: 'orange',
+            backgroundColor: '#00828b',
           },
           indicatorStyle: styles.indicatorStyle,
           labelStyle: styles.labelStyle,
@@ -53,7 +66,8 @@ export default class PopularPage extends Component {
       }),
     );
     return (
-      <View style={styles.container}>
+      <View style={{flex: 1, marginTop: 30}}>
+        {navigationBar}
         <TabNavigator />
       </View>
     );
