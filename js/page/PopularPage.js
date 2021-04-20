@@ -83,6 +83,7 @@ class PopularTab extends Component {
         pageSize,
         store.items,
         callback => {
+          console.log('没有更多了');
           this.toast.show('没有更多了');
         },
       );
@@ -124,7 +125,7 @@ class PopularTab extends Component {
     return this._store().hideLoadingMore ? null : (
       <View style={styles.indicatorContainer}>
         <ActivityIndicator style={styles.indicator} />
-        <Text>正在加载更多</Text>
+        <Text>正在加载更多（○｀ 3′○）</Text>
       </View>
     );
   }
@@ -150,9 +151,19 @@ class PopularTab extends Component {
           }
           ListFooterComponent={() => this.genIndicator()}
           onEndReached={() => {
-            this.loadData(true);
+            console.log('--onEndReached--');
+            setTimeout(() => {
+              if (this.canLoadMore) {
+                this.loadData(true);
+                this.canLoadMore = false;
+              }
+            }, 100);
           }}
           onEndReachedThreshold={0.5}
+          onMomentumScrollBegin={() => {
+            this.canLoadMore = true; // fix: 初始化时页调用滚动onEndReached的问题
+            console.log('--onMementumScrollBegin--');
+          }}
         />
         <Toast ref={toast => (this.toast = toast)} position={'center'} />
       </View>

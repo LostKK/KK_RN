@@ -91,6 +91,7 @@ function handleData(dispatch, storeName, data, pageSize) {
   }
   dispatch({
     type: Types.POPULAR_REFRESH_SUCCESS,
+    items: fixItems,
     projectModels:
       pageSize > fixItems.length ? fixItems : fixItems.slice(0, pageSize), //第一次要加载的数据
     storeName,
