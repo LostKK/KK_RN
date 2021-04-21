@@ -6,11 +6,12 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
+  DeviceInfo,
 } from 'react-native';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createAppContainer} from 'react-navigation';
 import NavigationUtil from '../navigator/NavigationUtil';
-import PopularItem from '../common/PopularItem';
+import TrendingItem from '../common/TrendingItem';
 import Toast from 'react-native-easy-toast';
 import NavigationBar from '../common/NavigationBar';
 import {connect} from 'react-redux';
@@ -59,6 +60,7 @@ export default class TrendingPage extends Component {
           scrollEnabled: true,
           style: {
             backgroundColor: '#00828b',
+            height: 30,
           },
           indicatorStyle: styles.indicatorStyle,
           labelStyle: styles.labelStyle,
@@ -66,7 +68,8 @@ export default class TrendingPage extends Component {
       }),
     );
     return (
-      <View style={{flex: 1, marginTop: 30}}>
+      <View
+        style={{flex: 1, marginTop: DeviceInfo.isIPhoneX_deprecated ? 30 : 0}}>
         {navigationBar}
         <TabNavigator />
       </View>
@@ -132,7 +135,7 @@ class TrendingTab extends Component {
 
   renderItem(data) {
     const item = data.item;
-    return <PopularItem item={item} onSelect={() => {}} />;
+    return <TrendingItem item={item} onSelect={() => {}} />;
   }
 
   genIndicator() {
@@ -152,7 +155,7 @@ class TrendingTab extends Component {
         <FlatList
           data={store.projectModels}
           renderItem={data => this.renderItem(data)}
-          keyExtractor={item => '' + item.id}
+          keyExtractor={item => '' + (item.id || item.fullName)}
           refreshControl={
             <RefreshControl
               title={'loading'}
@@ -212,6 +215,7 @@ const styles = StyleSheet.create({
   },
   tabStyle: {
     minWidth: 50,
+    // padding: 0,
   },
   indicatorStyle: {
     height: 2,
@@ -221,6 +225,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 6,
     marginBottom: 6,
+    // margin: 0,
   },
   indicatorContainer: {
     alignItems: 'center',

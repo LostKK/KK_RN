@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
+  DeviceInfo,
 } from 'react-native';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createAppContainer} from 'react-navigation';
@@ -59,6 +60,7 @@ export default class PopularPage extends Component {
           scrollEnabled: true,
           style: {
             backgroundColor: '#00828b',
+            // height: 30,
           },
           indicatorStyle: styles.indicatorStyle,
           labelStyle: styles.labelStyle,
@@ -66,7 +68,8 @@ export default class PopularPage extends Component {
       }),
     );
     return (
-      <View style={{flex: 1, marginTop: 30}}>
+      <View
+        style={{flex: 1, marginTop: DeviceInfo.isIPhoneX_deprecated ? 30 : 0}}>
         {navigationBar}
         <TabNavigator />
       </View>
@@ -209,6 +212,7 @@ const styles = StyleSheet.create({
   },
   tabStyle: {
     minWidth: 50,
+    // padding: 0,
   },
   indicatorStyle: {
     height: 2,
@@ -218,6 +222,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 6,
     marginBottom: 6,
+    // margin: 0,
   },
   indicatorContainer: {
     alignItems: 'center',

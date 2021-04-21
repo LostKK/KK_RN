@@ -5,6 +5,9 @@ export const Flag_STORAGE = {
   flag_popular: 'popular',
   flag_trending: 'trending',
 };
+
+const AUTH_TOKEN = 'fd82d1e882462e23b8e88aa82198f166';
+
 export default class DataStore {
   /**
    * 保存数据
@@ -98,7 +101,7 @@ export default class DataStore {
             reject(error);
           });
       } else {
-        new Trending()
+        new Trending(AUTH_TOKEN)
           .fetchTrending(url)
           .then(items => {
             if (!items) {
@@ -130,9 +133,15 @@ export default class DataStore {
     const currentDate = new Date();
     const targetDate = new Date();
     targetDate.setTime(timestamp);
-    if (currentDate.getMonth() !== targetDate.getMonth()) return false;
-    if (currentDate.getDate() !== targetDate.getDate()) return false;
-    if (currentDate.getHours() !== targetDate.getHours() > 4) return false;
+    if (currentDate.getMonth() !== targetDate.getMonth()) {
+      return false;
+    }
+    if (currentDate.getDate() !== targetDate.getDate()) {
+      return false;
+    }
+    if (currentDate.getHours() !== targetDate.getHours() > 4) {
+      return false;
+    }
     return true;
   }
 }
