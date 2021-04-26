@@ -14,6 +14,8 @@ import NavigationUtil from '../navigator/NavigationUtil';
 import TrendingItem from '../common/TrendingItem';
 import Toast from 'react-native-easy-toast';
 import NavigationBar from '../common/NavigationBar';
+import TrendingDialog from '../common/TrendingDialog';
+import {TimeSpan} from '../mo/TimeSpan';
 import {connect} from 'react-redux';
 import actions from '../action/index';
 
@@ -59,8 +61,8 @@ export default class TrendingPage extends Component {
           upperCaseLabel: false,
           scrollEnabled: true,
           style: {
-            backgroundColor: '#00828b',
-            height: 30,
+            backgroundColor: 'orange',
+            // height: 30,
           },
           indicatorStyle: styles.indicatorStyle,
           labelStyle: styles.labelStyle,
