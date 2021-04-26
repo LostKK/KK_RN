@@ -7,14 +7,15 @@ import {
   StyleSheet,
   ViewPropTypes,
   Platform,
+  DeviceInfo,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {PropTypes} from 'prop-types';
 import TimeSpan from '../mo/TimeSpan';
 export const TimeSpans = [
-  new TimeSpans('今 天', 'since=daily'),
-  new TimeSpans('本 周', 'since=weekly'),
-  new TimeSpans('本 月', 'sincle=monthly'),
+  new TimeSpan('今 天', 'since=daily'),
+  new TimeSpan('本 周', 'since=weekly'),
+  new TimeSpan('本 月', 'sincle=monthly'),
 ];
 
 const NAV_BAR_HEIGHT_IOS = 44; //导航栏在iOS中的高度
@@ -62,17 +63,17 @@ export default class TrendingDialog extends Component {
             style={styles.arrow}
           />
           <View style={styles.content}>
-            {TimeSpan.map((result, i, arr) => {
+            {TimeSpans.map((result, i, arr) => {
               return (
                 <TouchableOpacity
                   onPress={() => onSelect(arr[i])}
                   underlayColor="transparent">
                   <View style={styles.text_container}>
                     <Text style={styles.text}>{arr[i].showText}</Text>
-                    {i !== TimeSpans.length - 1 ? (
-                      <View style={styles.line} />
-                    ) : null}
                   </View>
+                  {i !== TimeSpans.length - 1 ? (
+                    <View style={styles.line} />
+                  ) : null}
                 </TouchableOpacity>
               );
             })}
@@ -88,6 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.6)',
     flex: 1,
     alignItems: 'center',
+    paddingTop: DeviceInfo.isIPhoneX_deprecated ? 30 : 0,
   },
   arrow: {
     marginTop: 40,
