@@ -207,7 +207,14 @@ class TrendingTab extends Component {
 
   renderItem(data) {
     const item = data.item;
-    return <TrendingItem item={item} onSelect={() => {}} />;
+    return (
+      <TrendingItem
+        item={item}
+        onSelect={() => {
+          NavigationUtil.goPage({projectModels: item}, 'DetailPage');
+        }}
+      />
+    );
   }
 
   genIndicator() {

@@ -9,6 +9,7 @@ import {
 import {WebView} from 'react-native-webview';
 import NavigationBar from '../common/NavigationBar';
 import ViewUtil from '../util/ViewUtil';
+import BackPressComponent from '../common/BackPressComponent';
 
 const TRENDING_URL = 'https://github.com/';
 const THEME_COLOR = 'skyblue';
@@ -26,6 +27,22 @@ export default class DetailPage extends Component {
       url: this.url,
       canGoBack: false,
     };
+    this.backPress = new BackPressComponent({
+      backPress: () => this.onBackPress(),
+    });
+  }
+
+  componentDidMount() {
+    this.backPress.componentDidMount;
+  }
+
+  componentWillUnmount() {
+    this.backPress.componentWillUnmount;
+  }
+
+  onBackPress() {
+    this.onBack();
+    return true;
   }
 
   onBack() {
