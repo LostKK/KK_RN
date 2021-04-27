@@ -1,5 +1,6 @@
+import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import Ionicons from 'react-native-vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 export default class ViewUtil {
   /**
    * 获取左侧返回按钮
@@ -21,7 +22,7 @@ export default class ViewUtil {
    * @param callBack
    * @return {XML}
    */
-  static getShareButton() {
+  static getShareButton(callBack) {
     return (
       <TouchableOpacity underlayColor={'transparent'} onPress={callBack}>
         <Ionicons

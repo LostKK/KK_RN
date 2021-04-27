@@ -23,7 +23,12 @@ const MainNavigator = createStackNavigator({
       header: null,
     },
   },
-  DetailPage: DetailPage,
+  DetailPage: {
+    screen: DetailPage,
+    navigationOptions: {
+      header: null,
+    },
+  },
   FetchDemoPage: FetchDemoPage,
   AsyncStorageDemoPage: AsyncStorageDemoPage,
   DataStoreDemoPage: DataStoreDemoPage,
