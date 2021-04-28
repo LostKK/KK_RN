@@ -215,8 +215,11 @@ class TrendingTab extends Component {
     return (
       <TrendingItem
         projectModel={item}
-        onSelect={() => {
-          NavigationUtil.goPage({projectModel: item}, 'DetailPage');
+        onSelect={callback => {
+          NavigationUtil.goPage(
+            {projectModel: item, flag: Flag_STORAGE.flag_trending, callback},
+            'DetailPage',
+          );
         }}
         onFavorite={(item, isFavorite) =>
           FavoriteUtil.onFavorite(
