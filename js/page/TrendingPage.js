@@ -19,11 +19,15 @@ import NavigationBar from '../common/NavigationBar';
 import TrendingDialog, {TimeSpans} from '../common/TrendingDialog';
 import {connect} from 'react-redux';
 import actions from '../action/index';
+import {Flag_STORAGE} from '../expand/dao/DataStore';
+import FavoriteDao from '../expand/dao/FavoriteDao';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const EVENT_TYPE_TIME_SPAN_CHANGE = 'EVENT_TYPE_TIME_SPAN_CHANGE';
 const URL = 'https://github.com/trending/';
 const QUERY_STR = '&sort=starts';
 const THEME_COLOR = 'skyblue';
+const favoriteDao = new FavoriteDao(Flag_STORAGE.flag_trending);
+import FavoriteUtil from '../util/FavoriteUtil';
 export default class TrendingPage extends Component {
   constructor(props) {
     super(props);
@@ -171,13 +175,14 @@ class TrendingTab extends Component {
         ++store.pageIndex,
         pageSize,
         store.items,
+        favoriteDao,
         callback => {
           console.log('没有更多了');
           this.toast.show('没有更多了');
         },
       );
     } else {
-      onRefreshTrending(this.storeName, url, pageSize);
+      onRefreshTrending(this.storeName, url, pageSize, favoriteDao);
     }
   }
 
@@ -209,10 +214,18 @@ class TrendingTab extends Component {
     const item = data.item;
     return (
       <TrendingItem
-        item={item}
+        projectModel={item}
         onSelect={() => {
-          NavigationUtil.goPage({projectModels: item}, 'DetailPage');
+          NavigationUtil.goPage({projectModel: item}, 'DetailPage');
         }}
+        onFavorite={(item, isFavorite) =>
+          FavoriteUtil.onFavorite(
+            favoriteDao,
+            item,
+            isFavorite,
+            Flag_STORAGE.flag_popular,
+          )
+        }
       />
     );
   }
@@ -234,7 +247,7 @@ class TrendingTab extends Component {
         <FlatList
           data={store.projectModels}
           renderItem={data => this.renderItem(data)}
-          keyExtractor={item => '' + (item.id || item.fullName)}
+          keyExtractor={item => '' + item.item.fullName}
           refreshControl={
             <RefreshControl
               title={'loading'}
@@ -272,10 +285,19 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onRefreshTrending: (storeName, url) =>
-    dispatch(actions.onRefreshTrending(storeName, url)),
-  onLoadMoreTrending: (storeName, url) =>
-    dispatch(actions.onLoadMoreTrending(storeName, url)),
+  onRefreshTrending: (storeName, url, pageSize, favoriteDao) =>
+    dispatch(actions.onRefreshTrending(storeName, url, pageSize, favoriteDao)),
+  onLoadMoreTrending: (storeName, url, pageSize, item, favoriteDao, callBack) =>
+    dispatch(
+      actions.onLoadMoreTrending(
+        storeName,
+        url,
+        pageSize,
+        item,
+        favoriteDao,
+        callBack,
+      ),
+    ),
 });
 
 const TrendingTabPage = connect(
